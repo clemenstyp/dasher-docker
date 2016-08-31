@@ -7,9 +7,10 @@ RUN \
     apt-get update && \
     apt-get -y upgrade && \
     apt-get install -y libpcap-dev && \
-    apt-get install -y nodejs && \
     apt-get install -y git && \
+    apt-get install -y nodejs && \
     apt-get install -y npm && \
+    apt-get install nodejs-legacy && \ 
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 #install dasher
