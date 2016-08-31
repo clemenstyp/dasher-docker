@@ -10,15 +10,14 @@ RUN apt-get install -y --no-install-recommends npm
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 #install dasher
-ADD . /dasherApp
-RUN cd /dasherApp
 RUN git clone https://github.com/maddox/dasher.git
 RUN cd dasher
+WORKDIR /dasher
 RUN npm install
 
-
 # Interface the environment
-VOLUME /dasherApp/dasher/config
+VOLUME /dasher/config
 
 # Baseimage init process
-ENTRYPOINT ["sudo npm run start"]
+CMD cd dasher
+CMD sudo npm run start
