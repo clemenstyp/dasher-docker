@@ -26,4 +26,4 @@ ADD config.json /root/dasher/config.json
 VOLUME /root/dasher/config
 
 # Baseimage init process
-CMD cd /root/dasher && cp -n config.json /root/dasher/config.json  && npm run start
+CMD cd /root/dasher && cp -n config.json /root/dasher/config/config.json  && npm run start
