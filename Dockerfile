@@ -1,23 +1,28 @@
-FROM            phusion/baseimage
+FROM   ubuntu:latest
 MAINTAINER	Clemens Putschli <clemens@putschli.de>
 
 #Install libpcap-dev
-RUN apt-get update
-RUN apt-get install -y --no-install-recommends libpcap-dev
-RUN apt-get install -y --no-install-recommends nodejs
-RUN apt-get install -y --no-install-recommends git 
-RUN apt-get install -y --no-install-recommends npm
-RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+RUN \
+    sed -i 's/# \(.*multiverse$\)/\1/g' /etc/apt/sources.list && \
+    apt-get update && \
+    apt-get -y upgrade && \
+    apt-get install -y libpcap-dev && \
+    apt-get install -y nodejs && \
+    apt-get install -y git && \
+    apt-get install -y npm && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
 #install dasher
-RUN git clone https://github.com/maddox/dasher.git
-RUN cd dasher
-WORKDIR /dasher
-RUN npm install
+RUN cd /root && export GIT_SSL_NO_VERIFY=1 && \
+    git config --global http.sslVerify false && \
+    git clone https://github.com/maddox/dasher.git
+
+WORKDIR /root/dasher
+RUN cd /root/dasher && npm install
+ADD config.json /root/dasher/config/config.json
 
 # Interface the environment
-VOLUME /dasher/config
+VOLUME /root/dasher/config
 
 # Baseimage init process
-CMD cd dasher
-CMD sudo npm run start
+CMD cd /root/dasher && npm run start
